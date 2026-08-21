@@ -16,9 +16,9 @@ def start(message):
         btn1 = types.KeyboardButton('➕ добавить слот')
         btn2 = types.KeyboardButton('💯 посмотреть отзыв(один)')
         btn3 = types.KeyboardButton('💯 посмотреть отзывы')
-        btn6 = types.KeyboardButton('🕠 посмотерть все слоты')
-        btn5 = types.KeyboardButton('👤 посмотерть клиента')
-        btn4 = types.KeyboardButton('👤 посмотерть клиентов')
+        btn6 = types.KeyboardButton('🕠 посмотреть все слоты')
+        btn5 = types.KeyboardButton('👤 посмотреть клиента')
+        btn4 = types.KeyboardButton('👤 посмотреть клиентов')
         markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
 
         bot.reply_to(message, "🛠 Админ-панель:", reply_markup=markup)
@@ -59,7 +59,7 @@ def free_slot(message):
     except Exception as e:
         bot.reply_to(message, e)
 
-@bot.message_handler(func=lambda message: message.text == '🕠 посмотерть все слоты')
+@bot.message_handler(func=lambda message: message.text == '🕠 посмотреть все слоты')
 def get_slots(message):
     try:
         chat_id = message.chat.id
@@ -188,12 +188,12 @@ def get_rewiews(message):
             return
         text = "отзывы:\n"
         for r in result:
-            text += f"id: {r['ID']}, text: {r['Text']}, rating: {r['Rating']}, username - {r['Username']}, operation - {r['Operation']}, created_at - {r['CreatedAt']}\n"
+            text += f"--------------------\n№ id: {r['ID']}\n 👤username - {r['Username']}\n👤 операция: {r['Operation']}\n📝 Текст: {r['Text']}\n⭐ Оценка: {r['Rating']}\n🕟 Создан - {r['CreatedAt']}\n--------------------\n"
         bot.reply_to(message, text)
     except Exception as e:
         bot.reply_to(message, e)
 
-@bot.message_handler(func=lambda message: message.text == '👤 посмотерть клиентов')
+@bot.message_handler(func=lambda message: message.text == '👤 посмотреть клиентов')
 def get_clients(message):
     try:
         chat_id = message.chat.id
@@ -212,12 +212,12 @@ def get_clients(message):
             return
         text = "клиенты:\n"
         for r in result:
-            text += f"id: {r['ID']}, username - {r['Username']}, user_id - {r['User_id']} created_at - {r['CreatedAt']}\n"
+            text += f"---------------------\n№ id: {r['ID']}\n👤 юзернейм - {r['Username']}\n👤 user_id - {r['User_id']}\n🕟 создан - {r['CreatedAt']}\n---------------------\n"
         bot.reply_to(message, text)
     except Exception as e:
         bot.reply_to(message, e)
 
-@bot.message_handler(func=lambda message: message.text == '👤 посмотерть клиента')
+@bot.message_handler(func=lambda message: message.text == '👤 посмотреть клиента')
 def start_client(message):
     chat_id = message.chat.id
     if chat_id != ADMIN_ID:
@@ -244,7 +244,7 @@ def get_master_name_client(message):
         bot.reply_to(message, "ошибка сервера")
         return
     text = "клиент:\n"
-    text += f"id: {result['ID']}, username - {result['Username']}, user_id - {result['User_id']} created_at - {result['CreatedAt']}\n"
+    text += f"---------------------\n№ id: {result['ID']}\n👤 юзернейм - {result['Username']}\n👤 user_id - {result['User_id']}\n🕟 создан - {result['CreatedAt']}\n---------------------\n"
     bot.reply_to(message, text)
     del user_data[chat_id]  # Очищаем данные пользователя
 
@@ -274,7 +274,7 @@ def get_master_name_rewiew(message):
         bot.reply_to(message, "ошибка сервера")
         return
     text = "клиент:\n"
-    text += f"id: {result['ID']}, text: {result['Text']}, rating: {result['Rating']}, username - {result['Username']}, operation - {result['Operation']}, created_at - {result['CreatedAt']}\n"
+    text += f"№ id: {result['ID']}\n 👤username - {result['Username']}\n👤 операция: {result['Operation']}\n📝 Текст: {result['Text']}\n⭐ Оценка: {result['Rating']}\n🕟 Создан - {result['CreatedAt']}\n"
     bot.reply_to(message, text)
     del user_data[chat_id]  # Очищаем данные пользователя
 
@@ -295,9 +295,9 @@ def get_master_name_boocked(message):
     if response.status_code == 200:
         bot.reply_to(message,
                      f"вы записались на слот: {data['id']}")
-        notify_admin(f"📢 новая запись!")
+        notify_admin(f"📢 новая запись!\n 👤клиент - {chat_id}\n слот - {data['id']}")
     else:
-        bot.reply_to(message, "ошибка сервера")
+        bot.reply_to(message, f"ошибка сервера! возможно вы ввели неверный id: {data['id']}")
         return
 
     del user_data[chat_id]  # Очищаем данные пользователя
@@ -317,7 +317,7 @@ def get_my_rewiew(message):
             bot.reply_to(message, "ошибка сервера")
             return
         text = "отзыв:\n"
-        text += f"id: {result['ID']}, text: {result['Text']}, rating: {result['Rating']}, operation - {result['Operation']}, created_at - {result['CreatedAt']}\n"
+        text += f"💬текст: {result['Text']}\n💯оценка: {result['Rating']}\n👤 операция - {result['Operation']}\n"
         bot.reply_to(message, text)
     except Exception as e:
         bot.reply_to(message, e)
